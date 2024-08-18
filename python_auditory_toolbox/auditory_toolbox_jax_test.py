@@ -64,6 +64,13 @@ class AuditoryToolboxTests(absltest.TestCase):
 
     # Add one to python locs because Matlab arrays start at 1
     self.assertEqual(matlab_peak_locs, list(python_peak_locs+1))
+    
+    # Test using a single array for the fcoefs
+    fcoefs_array = jnp.stack(fcoefs)
+    self.assertEqual(fcoefs_array.shape, (10, 10))
+    y = pat.ErbFilterBank(x, fcoefs)
+    self.assertEqual(y.shape, (num_chan, impulse_len))
+    self.assertAlmostEqual(np.max(y), 0.10657410, delta=0.01)
 
   def test_correlogram_array(self):
     def local_peaks(x):

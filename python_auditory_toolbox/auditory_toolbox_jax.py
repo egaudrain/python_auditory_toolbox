@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import jax
 import jax.numpy as jnp
 
-from typing import List
+from typing import List, Union
 
 
 def ErbSpace(low_freq: float = 100, high_freq: float = 44100/4,
@@ -156,18 +156,20 @@ def MakeErbFilters(fs: float, num_channels: int,
   return fcoefs
 
 
-def ErbFilterBank(x: jnp.ndarray, fcoefs: List[jnp.ndarray]) -> jnp.ndarray:
+def ErbFilterBank(x: jnp.ndarray, 
+                  fcoefs: Union[jnp.ndarray, List[jnp.ndarray]]) -> jnp.ndarray:
   """Filter an input signal with a filterbank, producing one output vector
   per channel.
   
   Args:
     x: The input signal, one-dimensional
     fcoefs: A list of 10 num-channel-dimensional arrays that describe the 
-      filterbank.
+      filterbank. Alternatively, this can be a 10 x num_channel array.
   
   Returns:
     num-channel outputs in a num_channel x time array.
   """
+  # Take apart the list of coefficients, or split apart the single array.
   [a0, a11, a12, a13, a14, a2, b0, b1, b2, gain] = fcoefs
   n_chan = a0.shape[0]
   assert n_chan == a11.shape[0]
