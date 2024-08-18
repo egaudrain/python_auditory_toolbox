@@ -64,7 +64,7 @@ class AuditoryToolboxTests(absltest.TestCase):
 
     # Add one to python locs because Matlab arrays start at 1
     self.assertEqual(matlab_peak_locs, list(python_peak_locs+1))
-    
+
     # Test using a single array for the fcoefs
     fcoefs_array = jnp.stack(fcoefs)
     self.assertEqual(fcoefs_array.shape, (10, 10))

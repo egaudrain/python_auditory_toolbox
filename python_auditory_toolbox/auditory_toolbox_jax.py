@@ -156,7 +156,7 @@ def MakeErbFilters(fs: float, num_channels: int,
   return fcoefs
 
 
-def ErbFilterBank(x: jnp.ndarray, 
+def ErbFilterBank(x: jnp.ndarray,
                   fcoefs: Union[jnp.ndarray, List[jnp.ndarray]]) -> jnp.ndarray:
   """Filter an input signal with a filterbank, producing one output vector
   per channel.
