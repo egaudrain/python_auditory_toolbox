@@ -77,7 +77,7 @@ class AuditoryToolboxTests(absltest.TestCase):
     plt.semilogx(freq_scale[:n//2, :], resp[:n//2, :])
     plt.axis((100, fs/2, -60, 0))
     plt.xlabel('Frequency (Hz)')
-    plt.ylabel('Filter Response (dB)');
+    plt.ylabel('Filter Response (dB)')
 
   def test_correlogram_array(self):
     def local_peaks(x):
