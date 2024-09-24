@@ -4,6 +4,7 @@ import math
 from absl.testing import absltest
 import numpy as np
 import scipy
+import matplotlib.pyplot as plt
 
 import auditory_toolbox as pat
 
@@ -65,6 +66,18 @@ class AuditoryToolboxTests(absltest.TestCase):
 
     # Add one to python locs because Matlab arrays start at 1
     np.testing.assert_equal(matlab_peak_locs, python_peak_locs+1)
+
+  def test_erb_filterbank_example(self):
+    n = 512
+    fs = 16000
+    fcoefs = pat.MakeErbFilters(16000,10,100)
+    y = pat.ErbFilterBank(np.array([1.0] + [0] * (n-1), dtype=float), fcoefs)
+    resp = 20*np.log10(np.abs(np.fft.fft(y, axis=1))).T
+    freq_scale = np.expand_dims(np.linspace(0, 16000, 512), 1)
+    plt.semilogx(freq_scale[:n//2, :], resp[:n//2, :])
+    plt.axis((100, fs/2, -60, 0))
+    plt.xlabel('Frequency (Hz)')
+    plt.ylabel('Filter Response (dB)');
 
   def test_correlogram_array(self):
     def local_peaks(x):

@@ -77,13 +77,16 @@ def MakeErbFilters(fs: float, num_channels: int,
 
   Execute the following code to evaluate the frequency
   response of a 10 channel filterbank.
-    fcoefs = MakeErbFilters(16000,10,100)
-    y = ErbFilterBank([1 zeros(1,511)], fcoefs)
-   	resp = 20*log10(abs(fft(y')))
-   	freqScale = (0:511)/512*16000
-  	semilogx(freqScale(1:255),resp(1:255,:))
-  	axis([100 16000 -60 0])
-  	xlabel('Frequency (Hz)') ylabel('Filter Response (dB)')
+    n = 512
+    fs = 16000
+    fcoefs = pat.MakeErbFilters(16000,10,100)
+    y = pat.ErbFilterBank(np.array([1.0] + [0] * (n-1), dtype=float), fcoefs)
+    resp = 20*np.log10(np.abs(np.fft.fft(y, axis=1))).T
+    freq_scale = np.expand_dims(np.linspace(0, 16000, 512), 1)
+    plt.semilogx(freq_scale[:n//2, :], resp[:n//2, :])
+    plt.axis((100, fs/2, -60, 0))
+    plt.xlabel('Frequency (Hz)')
+    plt.ylabel('Filter Response (dB)');
 
   Args:
     fs: Sampling rate (in Hz) of the filterbank (needed to determine CFs).

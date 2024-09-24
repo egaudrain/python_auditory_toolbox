@@ -3,6 +3,7 @@ from absl.testing import absltest
 import jax.numpy as jnp
 import numpy as np  # For testing
 import scipy
+import matplotlib.pyplot as plt
 
 import auditory_toolbox_jax as pat
 
@@ -71,6 +72,19 @@ class AuditoryToolboxTests(absltest.TestCase):
     y = pat.ErbFilterBank(x, fcoefs)
     self.assertEqual(y.shape, (num_chan, impulse_len))
     self.assertAlmostEqual(np.max(y), 0.10657410, delta=0.01)
+
+  def test_erb_filterbank_example(self):
+    """Just to make sure the example code keeps working."""
+    n = 512
+    fs = 16000
+    fcoefs = pat.MakeErbFilters(16000,10,100)
+    y = pat.ErbFilterBank(jnp.array([1.0] + [0] * (n-1), dtype=float), fcoefs)
+    resp = 20*jnp.log10(jnp.abs(jnp.fft.fft(y, axis=1))).T
+    freq_scale = jnp.expand_dims(jnp.linspace(0, 16000, 512), 1)
+    plt.semilogx(freq_scale[:n//2, :], resp[:n//2, :])
+    plt.axis((100, fs/2, -60, 0))
+    plt.xlabel('Frequency (Hz)')
+    plt.ylabel('Filter Response (dB)');
 
   def test_correlogram_array(self):
     def local_peaks(x):
