@@ -121,9 +121,9 @@ def MakeErbFilters(fs: float, num_channels: int,
   erb = ((cf/ear_q)**order + min_bw**order)**(1/order)
   b=1.019*2*pi*erb
 
-  a0 = t
+  a0 = t   # Feedback coefficients (poles)
   a2 = 0
-  b0 = 1
+  b0 = 1   # Feedforward coefficients (zeros)
   b1 = -2*cos(2*cf*pi*t)/exp(b*t)
   b2 = exp(-2*b*t)
 
@@ -181,6 +181,7 @@ def ErbFilterBank(x: jnp.ndarray,
   assert n_chan == a14.shape[0]
   assert n_chan == b0.shape[0]
   assert n_chan == b1.shape[0]
+  assert n_chan == b2.shape[0]
   assert n_chan == gain.shape[0]
 
   sos = jnp.stack((jnp.stack([a0/gain,  a0,   a0, a0], axis=1),
