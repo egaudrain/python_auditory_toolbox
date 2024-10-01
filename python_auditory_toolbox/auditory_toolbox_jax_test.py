@@ -217,7 +217,7 @@ class AuditoryToolboxTests(absltest.TestCase):
       vowel = pat.MakeVowel(1024, [1,], sample_rate, vowel, bw=bw)
       spectrum = 20*np.log10(np.abs(np.fft.fft(vowel)))
       peak_locs = local_peaks(spectrum)[:3]
-      peak_widths = scipy.signal.peak_widths(spectrum, peak_locs, 
+      peak_widths = scipy.signal.peak_widths(spectrum, peak_locs,
                                              rel_height=0.5)[0]
       return peak_widths
 
