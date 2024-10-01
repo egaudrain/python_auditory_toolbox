@@ -28,9 +28,11 @@
 # ==============================================================================
 
 # Malcolm Notes:
+# Cleanup: remove previous dist/* and update version # below.
 # To create distributions:  python3 -m build
 # To upload distribution: python3 -m twine upload dist/*
 #   Use __token__ as the User name and an API key for the password
+#   Probably need to generate a new API token at pypi.org/manage/account/token
 # To test in a new environment: conda create --name test
 # Then: conda activate test
 # Then: pip install python_auditory_toolbox
@@ -48,7 +50,7 @@ with open('README.md', 'r', encoding='utf-8') as fh:
 
 setuptools.setup(
   name='python_auditory_toolbox',
-  version='1.0.4',
+  version='1.0.5',
   author='Malcolm Slaney',
   author_email='malcolm@ieee.org',
   description='Several simple auditory models in JAX, Numpy and Torch',
