@@ -211,6 +211,16 @@ class AuditoryToolboxTests(absltest.TestCase):
       freqs = jnp.arange(len(vowel))*sample_rate/len(vowel)
       return freqs[local_peaks(spectrum)[:3]]
 
+    def peak_widths(vowel, bw=50):
+      """Synthesize a vowel and find the frequencies of the spectral peaks"""
+      sample_rate = 16000
+      vowel = pat.MakeVowel(1024, [1,], sample_rate, vowel, bw=bw)
+      spectrum = 20*np.log10(np.abs(np.fft.fft(vowel)))
+      peak_locs = local_peaks(spectrum)[:3]
+      peak_widths = scipy.signal.peak_widths(spectrum, peak_locs, 
+                                             rel_height=0.5)[0]
+      return peak_widths
+
     # Make sure the spectrum of each vowel has peaks in the right spots.
     bin_width = 16000/1024
     np.testing.assert_allclose(vowel_peaks('a'),
@@ -222,6 +232,10 @@ class AuditoryToolboxTests(absltest.TestCase):
     np.testing.assert_allclose(vowel_peaks('u'),
                                np.array([300, 870, 2240]),
                                atol=bin_width)
+
+    widths_50 = peak_widths('/a/', 50)
+    widths_100 = peak_widths('/a/', 100)
+    np.testing.assert_array_less(widths_50, widths_100)
 
 
 if __name__ == '__main__':

@@ -281,7 +281,8 @@ def prepare_coefficients(fcoefs: List[torch.Tensor]) -> torch.Tensor:
 def make_vowel(sample_len: int,
                pitch: float,
                sample_rate: float,
-               f) -> torch.Tensor:
+               f,
+               bw=50) -> torch.Tensor:
   """Synthesize an artificial vowel using formant filters.
 
   The code is directly adapted from MakeVowel by Malcolm Slaney
@@ -317,6 +318,7 @@ def make_vowel(sample_len: int,
       f1: Is the frequency of the first formant.
       f2: Optional 2nd formant frequency
       f3: Optional 3rd formant frequency
+  bw : width (in Hz) of the forman filter
 
   Returns
   -------
@@ -371,13 +373,13 @@ def make_vowel(sample_len: int,
   #    by f and the bandwidth of the formant is a constant 50Hz.  The
   #    sampling frequency in Hz is given by fs.
   if f1 > 0:
-    y = formant_filter(f1, sample_rate, y)
+    y = formant_filter(f1, sample_rate, y, bw)
 
   if f2 > 0:
-    y = formant_filter(f2, sample_rate, y)
+    y = formant_filter(f2, sample_rate, y, bw)
 
   if f3 > 0:
-    y = formant_filter(f3, sample_rate, y)
+    y = formant_filter(f3, sample_rate, y, bw)
 
   return y
 
@@ -389,10 +391,9 @@ def glottal_filter(sample_rate, x):
                  torch.tensor([1, 0, 0], dtype=torch.float64), clamp=False)
 
 
-def formant_filter(f, sample_rate, x):
+def formant_filter(f, sample_rate, x, bw):
   """Filter with a formant filter."""
   cft = f/sample_rate
-  bw = 50
   q = f/bw
   rho = math.exp(-math.pi * cft / q)
   theta = 2 * math.pi * cft * math.sqrt(1-1/(4 * q*q))

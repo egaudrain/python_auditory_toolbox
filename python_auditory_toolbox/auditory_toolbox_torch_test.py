@@ -216,6 +216,10 @@ class AuditoryToolboxTests(absltest.TestCase):
 
     self.assertEqual(list(loc+1), [376, 351, 513, 513])
 
+  def test_make_vowels_bw(self):
+    # Need to write tests.
+    pass
+
   def test_correlogram_array(self):
     """Test correlogram_frame."""
     def local_peaks(x):

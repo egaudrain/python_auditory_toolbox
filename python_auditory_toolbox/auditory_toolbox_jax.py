@@ -282,7 +282,7 @@ def FMPoints(sample_len, freq, fm_freq=6, fm_amp=None, fs=22050):
   return points
 
 
-def MakeVowel(sample_len, pitch, sample_rate, f1=0, f2=0, f3=0):
+def MakeVowel(sample_len, pitch, sample_rate, f1=0, f2=0, f3=0, bw=50):
   """Synthesize an artificial vowel using formant filters.
 
    MakeVowel(sample_len, pitch [, sample_rate, f1, f2, f3]) -
@@ -313,6 +313,7 @@ def MakeVowel(sample_len, pitch, sample_rate, f1=0, f2=0, f3=0):
       of the first formatn.
     f2: Optional 2nd formant frequency (if f1 is not a vowel name)
     f3: Optional 3rd formant frequency (if f1 is not a vowel name)
+    bw: Width of the formant filter (in Hz)
     
   Returns:
     A time domain waveform containing the synthetic vowel sound.
@@ -356,7 +357,6 @@ def MakeVowel(sample_len, pitch, sample_rate, f1=0, f2=0, f3=0):
   #    sampling frequency in Hz is given by fs.
   if f1 > 0:
     cft = f1/sample_rate
-    bw = 50
     q = f1/bw
     rho = jnp.exp(-jnp.pi * cft / q)
     theta = 2 * jnp.pi * cft * jnp.sqrt(1-1/(4 * q*q))
@@ -370,7 +370,6 @@ def MakeVowel(sample_len, pitch, sample_rate, f1=0, f2=0, f3=0):
   #    sampling frequency in Hz is given by fs.
   if f2 > 0:
     cft = f2/sample_rate
-    bw = 50
     q = f2/bw
     rho = jnp.exp(-jnp.pi * cft / q)
     theta = 2 * jnp.pi * cft * jnp.sqrt(1-1/(4 * q*q))
@@ -384,7 +383,6 @@ def MakeVowel(sample_len, pitch, sample_rate, f1=0, f2=0, f3=0):
   #    sampling frequency in Hz is given by fs.
   if f3 > 0:
     cft = f3/sample_rate
-    bw = 50
     q = f3/bw
     rho = jnp.exp(-jnp.pi * cft / q)
     theta = 2 * jnp.pi * cft * jnp.sqrt(1-1/(4 * q*q))
