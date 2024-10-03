@@ -349,7 +349,7 @@ def make_vowel(sample_len: int,
   # returned.
   y = torch.zeros(sample_len, dtype=torch.float64)
   if isinstance(pitch, (int, float)):
-    points = torch.arange(0, sample_len, sample_rate /
+    points = torch.arange(0, sample_len-1, sample_rate /
                           pitch, dtype=torch.float64)
   else:
     points = torch.sort(torch.as_tensor(pitch, dtype=torch.float64))[0]

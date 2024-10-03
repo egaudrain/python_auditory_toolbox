@@ -226,7 +226,14 @@ class AuditoryToolboxTests(absltest.TestCase):
 
     widths_50 = peak_widths('/a/', 50)
     widths_100 = peak_widths('/a/', 100)
+    # This is not a good test, as the main peaks do get a bit wider, but the
+    # important change is that the sidelobes, around the formant peak, get
+    # bigger.  That is harder to test.
     np.testing.assert_array_less(widths_50, widths_100)
+
+  def test_vowel_error(self):
+    # Looking for a crash for one specific pitch.  Found.
+    pat.MakeVowel(1024, 232.02860207189255, 8192, 'a', bw=50)
 
   def test_spectrogram(self):
     fs = 22050

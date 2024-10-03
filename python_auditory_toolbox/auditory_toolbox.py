@@ -333,7 +333,7 @@ def MakeVowel(sample_len, pitch, sample_rate, f1=0, f2=0, f3=0, bw=50):
   #    frequency (sample_rate).  A vector of the requested length is returned.
   y = np.zeros(sample_len, float)
   if isinstance(pitch, (int, float)):
-    points = np.arange(0, sample_len, sample_rate/pitch)
+    points = np.arange(0, sample_len-1, sample_rate/pitch)
   else:
     points = np.sort(np.asarray(pitch))
     points = points[points < sample_len-1]
