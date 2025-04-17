@@ -1,12 +1,12 @@
 """Code to test the auditory toolbox."""
 
-from absl.testing import absltest
+import unittest
 import torch
 import torch.fft
 import numpy as np
 import auditory_toolbox_torch as pat
 
-class AuditoryToolboxTests(absltest.TestCase):
+class AuditoryToolboxTests(unittest.TestCase):
   """Test cases for the filterbank."""
 
   def test_erb_space(self):
@@ -17,7 +17,7 @@ class AuditoryToolboxTests(absltest.TestCase):
     cf_array = pat.erb_space(low_freq=low_freq, high_freq=high_freq,
                              n=num_channels)
     cf_array = cf_array.numpy().squeeze()
-    self.assertLen(cf_array, num_channels)
+    self.assertEqual(len(cf_array), num_channels)
     # Make sure low and high CF's are where we expect them to be.
     self.assertAlmostEqual(cf_array[-1], low_freq)
     self.assertLess(cf_array[0], high_freq)
@@ -337,4 +337,4 @@ class AuditoryToolboxTests(absltest.TestCase):
     # self.assertAlmostEqual(lr.rvalue, -0.963, delta=0.03)
 
 if __name__ == '__main__':
-  absltest.main()
+  unittest.main()

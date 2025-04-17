@@ -1,5 +1,5 @@
 """Code to test the auditory toolbox."""
-from absl.testing import absltest
+import unittest
 import jax.numpy as jnp
 import numpy as np  # For testing
 import scipy
@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import auditory_toolbox_jax as pat
 
 
-class AuditoryToolboxTests(absltest.TestCase):
+class AuditoryToolboxTests(unittest.TestCase):
   """Test cases for auditory toolbox."""
   def test_erb_space(self):
     low_freq = 100.0
@@ -16,7 +16,7 @@ class AuditoryToolboxTests(absltest.TestCase):
     num_channels = 100
     cf_array = pat.ErbSpace(low_freq = low_freq, high_freq = high_freq,
                            n = num_channels)
-    self.assertLen(cf_array, num_channels)
+    self.assertEqual(len(cf_array), num_channels)
     # Make sure low and high CF's are where we expect them to be.
     self.assertAlmostEqual(cf_array[-1], low_freq, delta=0.001)
     self.assertLess(cf_array[0], high_freq)
@@ -239,4 +239,4 @@ class AuditoryToolboxTests(absltest.TestCase):
 
 
 if __name__ == '__main__':
-  absltest.main()
+  unittest.main()

@@ -66,14 +66,16 @@ setuptools.setup(
   ],
   python_requires='>=3.6',
   install_requires=[
-    'absl-py',
     'numpy',
-    'jax', 
+    'jax',
     'jaxlib',
     'matplotlib',
-    'scipy',
-    'torch',
-    'torchaudio',
+    'scipy'
   ],
-  include_package_data=True,  # Using the files specified in MANIFEST.in
+  extra_require={
+      'torch': [
+          'torch',
+          'torchaudio'
+      ]
+  }
 )

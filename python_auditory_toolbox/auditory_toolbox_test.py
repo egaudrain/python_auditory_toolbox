@@ -1,7 +1,7 @@
 """Code to test the auditory toolbox."""
 import math
 
-from absl.testing import absltest
+import unittest
 import numpy as np
 import scipy
 import matplotlib.pyplot as plt
@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import auditory_toolbox as pat
 
 
-class AuditoryToolboxTests(absltest.TestCase):
+class AuditoryToolboxTests(unittest.TestCase):
   """Test cases for auditory toolbox."""
   def test_erb_space(self):
     low_freq = 100.0
@@ -17,7 +17,7 @@ class AuditoryToolboxTests(absltest.TestCase):
     num_channels = 100
     cf_array = pat.ErbSpace(low_freq = low_freq, high_freq = high_freq,
                            n = num_channels)
-    self.assertLen(cf_array, num_channels)
+    self.assertEqual(len(cf_array), num_channels)
     # Make sure low and high CF's are where we expect them to be.
     self.assertAlmostEqual(cf_array[-1], low_freq)
     self.assertLess(cf_array[0], high_freq)
@@ -252,4 +252,4 @@ class AuditoryToolboxTests(absltest.TestCase):
                      math.floor(f0 / (fs/(segsize*ntrans)) + 0.5))
 
 if __name__ == '__main__':
-  absltest.main()
+  unittest.main()
